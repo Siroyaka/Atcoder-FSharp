@@ -1,4 +1,4 @@
-*.log
-*\*.sln
-*\src\*
-!*\*\*\Program.fs
+new.ps1.log
+*/*.sln
+*/src/*/obj/
+*.fsproj
