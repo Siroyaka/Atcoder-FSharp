@@ -49,6 +49,7 @@ function CreateContest([string]$contestPath) {
         MakeProject $questionName;
     }
 
+    code new .
     Set-Location $PSScriptRoot;
 }
 
@@ -79,6 +80,7 @@ function AddQuestion([string]$contestPath) {
         MakeProject $questionName;
     }
 
+    code new .
     Set-Location $PSScriptRoot;
 }
 

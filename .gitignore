@@ -1,4 +1,5 @@
 new.ps1.log
 */*.sln
 */src/*/obj/
+*/src/*/bin/
 *.fsproj
