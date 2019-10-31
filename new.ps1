@@ -49,7 +49,8 @@ function CreateContest([string]$contestPath) {
         MakeProject $questionName;
     }
 
-    code new .
+    code .
+	Write-Host "Open solution for VSCode";
     Set-Location $PSScriptRoot;
 }
 
@@ -80,7 +81,8 @@ function AddQuestion([string]$contestPath) {
         MakeProject $questionName;
     }
 
-    code new .
+    code .
+	Write-Host "Open solution for VSCode";
     Set-Location $PSScriptRoot;
 }
 
