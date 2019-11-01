@@ -3,6 +3,8 @@
 #>
 param([string]$command, [string]$contestName, [array]$questionNames)
 $LOGFILE = Join-Path $PSScriptRoot "new.ps1.log";
+$TEMPLATESOLUPATH = Join-Path $PSScriptRoot "SolutionTemplate\";
+$TEMPLATEPROJPATH = Join-Path $PSScriptRoot "ProjectTemplate\";
 
 function WriteLogFile([string]$logMessage) {
     $nowDate = Get-Date -Format "yyyy/MM/dd HH:mm:ss.f";
@@ -10,14 +12,28 @@ function WriteLogFile([string]$logMessage) {
     Write-Host $logMessage;
 }
 
+function TemplateUpdate([string]$templatePath, [string]$destination) {
+    if (Test-Path $templatePath) {
+        if ((Get-ChildItem $templatePath).Length -gt 0) {
+            Copy-Item -Path "$($templatePath)*" -Destination $destination -Recurse;
+            return $true;
+        }
+    }
+    return $false;
+}
+
 function MakeProject($questionName) {
     # プロジェクトを作成する
-    $sourcePath = Join-Path "src" $questionName;
-    dotnet.exe new console -lang F`# -o $sourcePath | Out-Null;
+    dotnet.exe new console -lang F`# -o $questionName | Out-Null;
     WriteLogFile "Create Project [$($questionName)]";
+
+    # プロジェクトフォルダをテンプレートで上書きする
+    if (TemplateUpdate $TEMPLATEPROJPATH $questionName) {
+        WriteLogFile "Update $($questionName) to Template";
+    }
     
     # プロジェクトをソリューションに関連付ける
-    $projFilePath = Join-Path $sourcePath "$($questionName).fsproj";
+    $projFilePath = Join-Path $questionName "$($questionName).fsproj";
     dotnet.exe sln add $projFilePath | Out-Null;
     WriteLogFile "Join Solution [$($questionName)]";
 }
@@ -41,6 +57,11 @@ function CreateContest([string]$contestPath) {
     dotnet.exe new sln -o $contestPath | Out-Null;
     WriteLogFile "Create Solution [$($contestName)]";
 
+    # コンテストのソリューションフォルダをテンプレートで上書きする
+    if (TemplateUpdate $TEMPLATESOLUPATH $contestPath) {
+        WriteLogFile "Update solution directory to Template";
+    }
+
     # ディレクトリを変更する。
     Set-Location $contestPath | Out-Null;
     
@@ -49,8 +70,6 @@ function CreateContest([string]$contestPath) {
         MakeProject $questionName;
     }
 
-    code .
-	Write-Host "Open solution for VSCode";
     Set-Location $PSScriptRoot;
 }
 
@@ -81,8 +100,6 @@ function AddQuestion([string]$contestPath) {
         MakeProject $questionName;
     }
 
-    code .
-	Write-Host "Open solution for VSCode";
     Set-Location $PSScriptRoot;
 }
 
