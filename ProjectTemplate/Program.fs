@@ -1,4 +1,3 @@
-// imitate chokudai scanner
 type Scanner() = class
     let mutable hold = [||]
     let mutable index = 0
@@ -41,9 +40,16 @@ type Scanner() = class
     
     member public this.ArrayF64(n: int) =
         [for _ in 0 .. n - 1 -> this.NextF64()]
+
+    member public __.Tuple2List n (f : int -> 'a list) =
+        [for _ in 0 .. n - 1 -> f 2 |> fun x -> x.[0], x.[1]]
+    
+    member public __.Tuple3List n (f : int -> 'a list) =
+        [for _ in 0 .. n - 1 -> f 3 |> fun x -> x.[0], x.[1], x.[2]]
+
 end
 
 [<EntryPoint>]
-let main =
+let main _ =
     Scanner().Next() |> printfn "%s"
     0

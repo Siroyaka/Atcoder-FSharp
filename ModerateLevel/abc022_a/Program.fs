@@ -44,17 +44,12 @@ end
 
 [<EntryPoint>]
 let main _ =
-    let rec atoz flg list = 
-        flg |> function 
-        | true -> list |> function
-            | head :: _ when head = 'A' -> List.rev list |> atoz false
-            | _ :: tail -> atoz true tail
-            | [] -> 0
-        | false -> list |> function
-            | head :: _ when head = 'Z' -> list.Length
-            | _ :: tail -> atoz false tail
-            | [] -> 0
+    let sc = Scanner()
+    let n, s, t = (sc.NextI32(), sc.NextI32(), sc.NextI32())
+    let a = sc.ArrayI32(n)
 
-    let s = Scanner().Next()
-    Seq.toList s |> atoz true |> printfn "%i"
+    List.scan (+) 0 a
+    |> List.where(fun x -> x >= s && x <= t)
+    |> List.length
+    |> printfn "%i"
     0

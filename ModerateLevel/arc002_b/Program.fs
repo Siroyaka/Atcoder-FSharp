@@ -44,17 +44,5 @@ end
 
 [<EntryPoint>]
 let main _ =
-    let rec atoz flg list = 
-        flg |> function 
-        | true -> list |> function
-            | head :: _ when head = 'A' -> List.rev list |> atoz false
-            | _ :: tail -> atoz true tail
-            | [] -> 0
-        | false -> list |> function
-            | head :: _ when head = 'Z' -> list.Length
-            | _ :: tail -> atoz false tail
-            | [] -> 0
-
-    let s = Scanner().Next()
-    Seq.toList s |> atoz true |> printfn "%i"
+    Scanner().Next() |> printfn "%s"
     0

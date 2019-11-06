@@ -2,4 +2,4 @@ new.ps1.log
 */*.sln
 */*/obj/
 */*/bin/
-*.fsproj
+symbolCache.db

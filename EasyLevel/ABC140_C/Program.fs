@@ -1,3 +1,4 @@
+
 // imitate chokudai scanner
 type Scanner() = class
     let mutable hold = [||]
@@ -44,6 +45,14 @@ type Scanner() = class
 end
 
 [<EntryPoint>]
-let main =
-    Scanner().Next() |> printfn "%s"
+let main _ =
+    let rec listsum list a : int =
+        match list with
+            | [x] -> a + x
+            | x :: xs :: xss -> min x xs |> (+) a |> listsum (xs::xss)
+            | _ -> a
+    let scanner = Scanner()
+    let n = scanner.NextI32()
+    let b = n - 1 |> scanner.ArrayI32
+    listsum b b.[0] |> printfn "%i"
     0
