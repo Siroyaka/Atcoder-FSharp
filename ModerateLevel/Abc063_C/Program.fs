@@ -1,5 +1,3 @@
-// 素数判定
-
 type Scanner() = class
     let mutable hold = [||]
     let mutable index = 0
@@ -42,15 +40,27 @@ type Scanner() = class
     
     member public this.ArrayF64(n: int) =
         [for _ in 0 .. n - 1 -> this.NextF64()]
+
+    member public __.Tuple2List n (f : int -> 'a list) =
+        [for _ in 0 .. n - 1 -> f 2 |> fun x -> x.[0], x.[1]]
+    
+    member public __.Tuple3List n (f : int -> 'a list) =
+        [for _ in 0 .. n - 1 -> f 3 |> fun x -> x.[0], x.[1], x.[2]]
+
 end
 
 [<EntryPoint>]
 let main _ =
-    let n = Scanner().NextI64()
-    match n with
-    | 1L -> "Not Prime"
-    | x when List.contains x [2L; 3L; 5L] -> "Prime"
-    | x when x % 2L = 0L || x % 3L = 0L || x % 5L = 0L -> "Not Prime"
-    | _ -> "Prime"
-    |> printfn "%s"
+    let sc = Scanner()
+    let n = sc.NextI32()
+    let a = sc.ArrayI32 n |> List.sort
+    let sum = List.sum a
+    if sum % 10 = 0 then
+        match List.tryFind (fun x -> x % 10 <> 0) a with
+        | Some(x) -> sum - x
+        | None -> 0
+    else
+        sum
+    |> printfn "%i"
+
     0
