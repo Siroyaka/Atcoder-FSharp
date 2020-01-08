@@ -51,9 +51,14 @@ end
 
 [<EntryPoint>]
 let main _ =
-    let scanner = Scanner()
-
-    scanner.Next()
+    let sc = Scanner()
+    let s = sc.Next()
+    let t = sc.Next()
+    let len = String.length s
+    let array = [|for i in 0 .. len - 1 -> s.[i+1..len-1] + s.[0..i]|]
+    match Array.tryFind (fun (item: string) -> item = t) array with
+        | Some _ -> "Yes"
+        | None -> "No"
     |> printfn "%s"
 
     0

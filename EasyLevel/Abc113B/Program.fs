@@ -52,8 +52,20 @@ end
 [<EntryPoint>]
 let main _ =
     let scanner = Scanner()
+    let n = scanner.NextI32()
+    let t = scanner.NextF64()
+    let a = scanner.NextF64()
+    let hArr = scanner.ArrayF64(n)
 
-    scanner.Next()
-    |> printfn "%s"
+    let temper x = t - x * 0.006
+    let answer x =
+        let p = a - (temper x)
+        if p < 0.0 then p * -1.0 else p
+    let arr = [|for item in hArr -> answer item|]
+
+    let (_, _, ans) =
+        Array.fold (fun (len, minv, ind) x -> if x < minv then len + 1, x, len + 1 else len + 1, minv, ind) (0, 10000.0, 0) arr
+
+    printfn "%i" ans
 
     0
