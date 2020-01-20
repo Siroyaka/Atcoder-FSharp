@@ -52,8 +52,16 @@ end
 [<EntryPoint>]
 let main _ =
     let scanner = Scanner()
-
-    scanner.Next()
-    |> printfn "%s"
+    let n = scanner.NextI32()
+    let m = scanner.NextI32()
+    let liA = scanner.ArrayI32 m |> Array.sort
+    if n >= m then 0
+    else
+        let a = 
+            [|for i in 0..m-2 -> liA.[i + 1] - liA.[i]|]
+            |> Array.sortDescending
+        let b = Array.skip (n - 1) a |> Array.sum
+        b
+    |> printfn "%i"
 
     0

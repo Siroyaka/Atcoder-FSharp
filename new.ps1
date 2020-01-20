@@ -110,6 +110,8 @@ function CreateContest([string]$contestPath) {
     }
     WriteLogFile "作成問題数: $($questionNames.Length)";
 
+    code $questionNames[0];
+
     Set-Location $PSScriptRoot;
 }
 
@@ -147,7 +149,7 @@ function AddQuestion([string]$contestPath) {
     # ディレクトリを変更する。
     Set-Location $contestPath | Out-Null;
     
-    $makeQuestionCount = 0;
+    $madeQuestionNames = @();
     # 問題のプロジェクトを作成し、ソリューションと結びつける。
     foreach ($questionName in $questionNames) {
         if (Test-Path(Join-Path $contestPath $questionName)) {
@@ -156,9 +158,10 @@ function AddQuestion([string]$contestPath) {
         }
         MakeProject $questionName $TEMPLATEPROJPATH;
         JoinSolution $questionName;
-        $makeQuestionCount += 1;
+        $madeQuestionNames += $questionName;
     }
-    WriteLogFile "作成問題数: $($makeQuestionCount)";
+    WriteLogFile "作成問題数: $($madeQuestionNames.Length)";
+    code $madeQuestionNames[0];
 
     Set-Location $PSScriptRoot;
 }

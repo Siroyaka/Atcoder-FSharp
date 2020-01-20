@@ -49,11 +49,22 @@ type Scanner() = class
 
 end
 
+let uc a b =
+    let rec sub l s = 
+        if s = 0 then l else l % s |> sub s
+    if a > b then sub a b else sub b a
+
 [<EntryPoint>]
 let main _ =
     let scanner = Scanner()
+    let n = scanner.NextI32()
+    let arrX = scanner.ArrayI32(n + 1)
 
-    scanner.Next()
-    |> printfn "%s"
+    arrX
+    |> Array.sort
+    |> Array.pairwise
+    |> Array.map (fun (x, y) -> y - x)
+    |> Array.fold uc 0
+    |> printfn "%i"
 
     0
