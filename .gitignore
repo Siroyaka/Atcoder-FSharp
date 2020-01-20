@@ -1,5 +1,4 @@
 new.ps1.log
-*/*.sln
 */*/obj/
 */*/bin/
 symbolCache.db
