@@ -63,8 +63,16 @@ end
 [<EntryPoint>]
 let main _ =
     let scanner = Scanner()
+    let n = scanner.NextI32()
+    let dicD = scanner.CountDic n scanner.NextI64
+    let m = scanner.NextI32()
+    let dicE = scanner.CountDic m scanner.NextI64
 
-    scanner.Next()
+    dicE
+    |> Seq.tryFind (fun x -> if dicD.ContainsKey(x.Key) then dicD.[x.Key] < x.Value else true)
+    |> function
+        | None -> "YES"
+        | Some(_) -> "NO"
     |> printfn "%s"
 
     0
