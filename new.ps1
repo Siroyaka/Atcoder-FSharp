@@ -5,6 +5,7 @@ param([string]$command, [string]$contestName, [array]$questionNames)
 $LOGFILE = Join-Path $PSScriptRoot "new.ps1.log";
 $TEMPLATESOLUPATH = Join-Path $PSScriptRoot "SolutionTemplate\";
 $TEMPLATEPROJPATH = Join-Path $PSScriptRoot "ProjectTemplate\";
+$PROGRAMFILENAME = "Program.fs"
 
 <#
     ## 内容
@@ -15,6 +16,12 @@ function WriteLogFile([string]$logMessage) {
     $nowDate = Get-Date -Format "yyyy/MM/dd HH:mm:ss.f";
     Write-Output "$($nowDate) $($logMessage)" | Add-Content $LOGFILE;
     Write-Host $logMessage;
+}
+
+function OpenVsCode([string]$directoryPath) {
+    $filepath = Join-Path $directoryPath $PROGRAMFILENAME;
+    $lineplus = $filepath + ":" + "64";
+    code $directoryPath -r -g $lineplus;
 }
 
 <#
@@ -110,7 +117,7 @@ function CreateContest([string]$contestPath) {
     }
     WriteLogFile "作成問題数: $($questionNames.Length)";
 
-    code $questionNames[0];
+    OpenVsCode $questionNames[0];
 
     Set-Location $PSScriptRoot;
 }
@@ -161,7 +168,8 @@ function AddQuestion([string]$contestPath) {
         $madeQuestionNames += $questionName;
     }
     WriteLogFile "作成問題数: $($madeQuestionNames.Length)";
-    code $madeQuestionNames[0];
+
+    OpenVsCode $madeQuestionNames[0];
 
     Set-Location $PSScriptRoot;
 }
