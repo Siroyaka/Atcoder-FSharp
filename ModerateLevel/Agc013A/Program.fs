@@ -60,10 +60,37 @@ type Scanner() = class
 
 end
 
+type Ordering =
+    | LT = -1
+    | EQ = 0
+    | GT = 1
+
 [<EntryPoint>]
 let main _ =
     let scanner = Scanner()
     let n = scanner.NextI32()
     let arr = scanner.ArrayI64(n)
-
+    let order a b = if a > b then Ordering.GT else if a < b then Ordering.LT else Ordering.EQ
+    let ff b bb = if b = bb || b = Ordering.EQ || bb = Ordering.EQ then 0L else 1L
+    let rec f b c =
+        function
+        | [] -> c
+        | (x,y)::xs -> 
+            let ord = order x y
+            if ord = Ordering.EQ
+            then
+                f b c xs
+            else
+                let ad = ff b ord
+                f (if ad = 1L then Ordering.EQ else ord) (c + ad) xs
+ 
+    if (Array.length arr) < 2
+    then 1L
+    else
+        let pairs = Array.pairwise arr
+        let (x, y) = pairs.[0]
+        Array.toList pairs
+        |> f (order x y) 1L
+    |> printfn "%i"
+    
     0
