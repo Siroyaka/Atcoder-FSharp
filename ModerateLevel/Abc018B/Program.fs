@@ -51,6 +51,9 @@ end
 
 [<EntryPoint>]
 let main _ =
+    #if DEBUG
+    printfn "debug"
+    #endif
     let scanner = Scanner()
     let s = scanner.Next()
     let n = scanner.NextI32()
@@ -61,7 +64,7 @@ let main _ =
         let newt = t.[l-1..r-1] |> Array.rev
         let fst = if l-1 < 1 then newt else Array.append t.[..l-2] newt
         if r >= len then fst else Array.append fst t.[r..]
-    
+        
     arrLr
     |> Array.fold (fun acc (l, r) -> change l r acc) (s.ToCharArray())
     |> Array.map (printf "%c")

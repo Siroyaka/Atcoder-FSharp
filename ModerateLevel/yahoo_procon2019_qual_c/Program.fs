@@ -62,13 +62,14 @@ end
 
 [<EntryPoint>]
 let main _ =
-#if DEBUG
-    printfn "debuged"
-#endif
-
     let scanner = Scanner()
-
-    scanner.Next()
-    |> printfn "%s"
+    let k, a, b = scanner.NextI64(), scanner.NextI64(), scanner.NextI64()
+    let chargeTurn = a - 1L
+    let changeMax = (k - chargeTurn) / 2L
+    let m = changeMax * b + ((k - chargeTurn) % 2L)
+    if b - a < 2L
+    then k + 1L
+    else m
+    |> printfn "%i"
 
     0
