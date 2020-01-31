@@ -65,10 +65,13 @@ let main _ =
 #if DEBUG
     printfn "debuged"
 #endif
-
     let scanner = Scanner()
+    let a = scanner.ArrayI32(3)
+    let s = scanner.Next()
 
-    scanner.Next()
-    |> printfn "%s"
+    Array.sum a
+    |> printf "%i "
+
+    printfn "%s" s
 
     0
