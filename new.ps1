@@ -3,7 +3,6 @@
 #>
 param([string]$command, [string]$contestName, [array]$questionNames)
 $LOGFILE = Join-Path $PSScriptRoot "new.ps1.log";
-$TEMPLATESOLUPATH = Join-Path $PSScriptRoot "SolutionTemplate\";
 $TEMPLATEPROJPATH = Join-Path $PSScriptRoot "ProjectTemplate\";
 $PROGRAMFILENAME = "Program.fs"
 
@@ -98,22 +97,12 @@ function CreateContest([string]$contestPath) {
         return;
     }
 
-    # コンテストのソリューションを作成する。
-    dotnet.exe new sln -o $contestPath | Out-Null;
-    WriteLogFile "Create Solution [$($contestName)]";
-
-    # コンテストのソリューションフォルダをテンプレートで上書きする
-    if (TemplateUpdate $TEMPLATESOLUPATH $contestPath) {
-        WriteLogFile "Update solution directory to Template";
-    }
-
     # ディレクトリを変更する。
     Set-Location $contestPath | Out-Null;
     
     # 問題のプロジェクトを作成し、ソリューションと結びつける。
     foreach ($questionName in $questionNames) {
         MakeProject $questionName $TEMPLATEPROJPATH;
-        JoinSolution $questionName;
     }
     WriteLogFile "作成問題数: $($questionNames.Length)";
 
@@ -164,7 +153,6 @@ function AddQuestion([string]$contestPath) {
             continue;
         }
         MakeProject $questionName $TEMPLATEPROJPATH;
-        JoinSolution $questionName;
         $madeQuestionNames += $questionName;
     }
     WriteLogFile "作成問題数: $($madeQuestionNames.Length)";
