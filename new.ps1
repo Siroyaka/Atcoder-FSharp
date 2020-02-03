@@ -97,6 +97,9 @@ function CreateContest([string]$contestPath) {
         return;
     }
 
+    # ディレクトリを作成する
+    New-Item -ItemType "Directory" -Path $contestPath;
+
     # ディレクトリを変更する。
     Set-Location $contestPath | Out-Null;
     
