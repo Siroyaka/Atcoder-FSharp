@@ -70,12 +70,12 @@ let main _ =
     let s = scanner.Next()
     let f ind len =
         function
-        | 'U' -> ind * 2 + (len - ind - 1)
-        | _ -> ind + (len - ind - 1) * 2
-    let l = String.length s
+        | 'U' -> ind * 2L + (len - ind - 1L)
+        | _ -> ind + (len - ind - 1L) * 2L
+    let l = String.length s |> int64
 
     Seq.indexed s
-    |> Seq.sumBy (fun (i, x) -> f i l x)
+    |> Seq.sumBy (fun (i, x) -> f (int64 i) l x)
     |> printfn "%i"
 
     0
