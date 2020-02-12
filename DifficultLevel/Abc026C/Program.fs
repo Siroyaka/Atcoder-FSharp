@@ -1,4 +1,3 @@
-
 open System.Collections.Generic
 
 type Scanner() = class
@@ -80,8 +79,23 @@ let main _ =
 #endif
 
     let scanner = Scanner()
+    let n = scanner.NextI32()
+    let arr = scanner.ArrayI32(n-1)
+    let compilation (acm: 'a array array) (x, i) =
+        Array.append acm.[x - 1] [|i|] |> Array.set acm (x-1)
+        acm
+    let comp =
+        Array.zip arr [|2..n|]
+        |> Array.fold compilation (Array.create n [||])
 
-    scanner.Next()
-    |> printfn "%s"
+    let rec dfs =
+        function
+        | [||] -> 1
+        | x ->
+            Array.map (fun y -> dfs comp.[y - 1]) x
+            |> fun i -> Array.max i + Array.min i + 1
+
+    dfs comp.[0]
+    |> printfn "%i"
 
     0
