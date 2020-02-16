@@ -80,8 +80,13 @@ let main _ =
 #endif
 
     let scanner = Scanner()
-
-    scanner.Next()
+    let n = scanner.NextI32()
+    let arr = scanner.ArrayI32(n)
+    arr
+    |> Array.where (fun x -> x % 2 = 0)
+    |> Array.where (fun x -> x % 3 <> 0 && x % 5 <> 0)
+    |> Array.length
+    |> fun x -> if x = 0 then "APPROVED" else "DENIED"
     |> printfn "%s"
 
     0

@@ -80,8 +80,12 @@ let main _ =
 #endif
 
     let scanner = Scanner()
-
-    scanner.Next()
+    let abc = scanner.ArrayI32(3)
+    let mx = Array.max abc
+    let mn = Array.min abc
+    let mxl = abc |> Array.where(fun x -> x = mx) |> Array.length
+    let mnl = abc |> Array.where(fun x -> x = mn) |> Array.length
+    if mxl = 2 || mnl = 2 then "Yes" else "No"
     |> printfn "%s"
 
     0

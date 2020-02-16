@@ -80,8 +80,18 @@ let main _ =
 #endif
 
     let scanner = Scanner()
-
-    scanner.Next()
+    let n = scanner.NextI32()
+    let arr = [|for _ in 0..n-1 -> scanner.Next()|]
+    let p = 
+        arr
+        |> Array.groupBy id
+        |> Array.map (fun (x, a) -> x, (Array.length a))
+    let mx = Array.maxBy snd p |> snd
+    p
+    |> Array.where (fun (_, c) -> c = mx)
+    |> Array.map fst
+    |> Array.sort
+    |> String.concat "\n"
     |> printfn "%s"
 
     0
