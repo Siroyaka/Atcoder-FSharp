@@ -81,27 +81,5 @@ let main _ =
 
     let scanner = Scanner()
     let iArr = scanner.Next().ToCharArray()
-    let leng = Array.length iArr
-    let ans = Array.zeroCreate leng
-
-    let mutable i = 0
-
-    while i < leng do
-        let j = i in
-            while i < leng && iArr.[i] = 'R' do i <- i + 1 
-        let k = i in
-            while i < leng && iArr.[i] = 'L' do i <- i + 1
-        let il = i - k
-        let ir = il - 1
-        let cr = (j - j / 2) + k / 2
-        let cl = j + k - cr
-        Array.set ans ir cr
-        Array.set ans il cl
-    done
-
-    ans
-    |> Array.map string
-    |> String.concat " "
-    |> printfn "%s"
 
     0
