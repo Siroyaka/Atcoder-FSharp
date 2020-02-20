@@ -81,5 +81,50 @@ let main _ =
 
     let scanner = Scanner()
     let iArr = scanner.Next().ToCharArray()
+    let leng = Array.length iArr
+    let ans = Array.zeroCreate leng
+
+    let fans countR countL ind =
+        let lInd = ind - countL
+        let rInd = lInd - 1
+        let rVal = (countR - countR / 2) + (countL / 2)
+        let lVal = countR + countL - rVal
+        Array.set ans rInd rVal
+        Array.set ans lInd lVal
+
+    let rec fl countR countL ind =
+        Array.tryItem ind iArr
+        |> function
+            | None ->
+                fans countR countL ind
+                -1
+            | Some(x) ->
+                match x with
+                | 'R' ->
+                    fans countR countL ind
+                    ind
+                | _ -> fl countR (countL+1) (ind+1)
+    
+    let rec fR countR ind =
+        let mutable nxcR = countR + 1
+        let nxInd =
+            if Array.item ind iArr = 'R'
+            then
+                ind + 1
+            else
+                nxcR <- 0
+                fl countR 0 ind
+        if nxInd = -1
+        then
+            0
+        else
+            fR nxcR nxInd
+
+    fR 0 0 |> ignore
+
+    ans
+    |> Array.map string
+    |> String.concat " "
+    |> printfn "%s"
 
     0
