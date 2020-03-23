@@ -4,7 +4,8 @@
 param([string]$command, [string]$contestName, [array]$questionNames)
 $LOGFILE = Join-Path $PSScriptRoot "new.ps1.log";
 $TEMPLATEPROJPATH = Join-Path $PSScriptRoot "ProjectTemplate\";
-$PROGRAMFILENAME = "Program.fs"
+$PROGRAMFILENAME = "Program.fs";
+$ENTRYPOINT_ROW = "76";
 
 <#
     ## 内容
@@ -19,7 +20,7 @@ function WriteLogFile([string]$logMessage) {
 
 function OpenVsCode([string]$directoryPath) {
     $filepath = Join-Path $directoryPath $PROGRAMFILENAME;
-    $lineplus = $filepath + ":" + "64";
+    $lineplus = $filepath + ":" + $ENTRYPOINT_ROW;
     code $directoryPath -r -g $lineplus;
 }
 
